@@ -20,13 +20,30 @@ public class UserService {
         userEntity.setName(user.getName());
         userEntity.setEmail(user.getEmail());
         userEntity.setPassword(user.getPassword());
-        
+
         return userRepository.save(userEntity);
-        
+
     }
 
     public List<User> getUser() {
         return userRepository.findAll();
+    }
+
+    public User updateUser(UserDTO user, Long id) {
+        User userEntity = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        userEntity.setName(user.getName());
+        userEntity.setEmail(user.getEmail());
+        userEntity.setPassword(user.getPassword());
+        return userRepository.save(userEntity);
+    }
+
+    public User getOneUser(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    public String deleteUser(Long id) {
+        userRepository.deleteById(id);
+        return "User deleted successfully at id: " + id;
     }
 
 }
