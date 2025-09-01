@@ -11,6 +11,8 @@ import com.tmtjava.tmtjava.dto.UserDTO;
 import com.tmtjava.tmtjava.entity.User;
 import com.tmtjava.tmtjava.service.UserService;
 
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -25,7 +27,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/create/users")
-    public User saveUser(@RequestBody UserDTO user) {
+    public User saveUser(@RequestBody @Valid UserDTO user) {
         return userService.saveUser(user);
     }
 
