@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tmtjava.tmtjava.dto.UserDTO;
+import com.tmtjava.tmtjava.dto.ApiResponse;
 import com.tmtjava.tmtjava.entity.User;
 import com.tmtjava.tmtjava.service.UserService;
 
@@ -18,8 +19,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-
-
 @RestController
 public class UserController {
 
@@ -27,29 +26,34 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/create/users")
-    public User saveUser(@RequestBody @Valid UserDTO user) {
-        return userService.saveUser(user);
+    public ApiResponse<User> saveUser(@RequestBody @Valid UserDTO user) {
+        User savedUser = userService.saveUser(user);
+        return new ApiResponse<>("User created successfully", 201, "SUCCESS", savedUser);
     }
 
     @GetMapping("/get/users")
-    public List<User> getUser() {
-        return userService.getUser();
+    public ApiResponse<List<User>> getUser() {
+        List<User> users = userService.getUser();
+        return new ApiResponse<>("Users retrieved successfully", 200, "SUCCESS", users);
     }
 
     @GetMapping("/get/users/{id}")
-    public User getOneUser(@PathVariable Long id) {
-        return userService.getOneUser(id);
+    public ApiResponse<User> getOneUser(@PathVariable Long id) {
+        User user = userService.getOneUser(id);
+        return new ApiResponse<>("User retrieved successfully", 200, "SUCCESS", user);
     }
     
 
     @PutMapping("/update/users/{id}")
-    public User updateUser( @PathVariable Long id, @RequestBody UserDTO user) {
-        return userService.updateUser(user, id);
+    public ApiResponse<User> updateUser(@PathVariable Long id, @RequestBody @Valid UserDTO user) {
+        User updatedUser = userService.updateUser(user, id);
+        return new ApiResponse<>("User updated successfully", 200, "SUCCESS", updatedUser);
     }
 
     @DeleteMapping("/delete/users/{id}")
-    public String deleteUser(@PathVariable Long id) {
-        return userService.deleteUser(id);
+    public ApiResponse<String> deleteUser(@PathVariable Long id) {
+        String result = userService.deleteUser(id);
+        return new ApiResponse<>(result, 200, "SUCCESS", null);
     }
 
 }
