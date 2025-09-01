@@ -17,6 +17,9 @@ public class UserService {
 
     public User saveUser(UserDTO user) {
         User userEntity = new User();
+        if(userRepository.existsByEmail(user.getEmail())) {
+            throw new RuntimeException("User already exists");
+        }
         userEntity.setName(user.getName());
         userEntity.setEmail(user.getEmail());
         userEntity.setPassword(user.getPassword());
