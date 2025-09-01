@@ -6,31 +6,32 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.tmtjava.tmtjava.dto.ApiResponse;
 
 @ControllerAdvice
 public class GlobalException {
 
     @ExceptionHandler(value = RuntimeException.class)
-    public ResponseEntity<Object> handleRuntimeException(RuntimeException ex) {
-        Map<String, Object> errorResponse = new HashMap<>();
-        errorResponse.put("message", ex.getMessage());
-        errorResponse.put("code", HttpStatus.BAD_REQUEST.value());
-        errorResponse.put("status", "ERROR");
-        
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ApiResponse<String>> handleRuntimeException(RuntimeException ex) {
+        ApiResponse<String> response = new ApiResponse<>(
+            ex.getMessage(), 
+            HttpStatus.BAD_REQUEST.value(), 
+            "ERROR"
+        );
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    public ResponseEntity<Object> handleValidationException(MethodArgumentNotValidException ex) {
-        Map<String, Object> errorResponse = new HashMap<>();
-        errorResponse.put("code", HttpStatus.BAD_REQUEST.value());
-        errorResponse.put("status", "ERROR");
+    public ResponseEntity<ApiResponse<String>> handleValidationException(MethodArgumentNotValidException ex) {
         // Lấy validation error đầu tiên
         String fieldError = ex.getBindingResult().getFieldErrors().get(0).getDefaultMessage();
-        errorResponse.put("message", fieldError);
         
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        ApiResponse<String> response = new ApiResponse<>(
+            fieldError, 
+            HttpStatus.BAD_REQUEST.value(), 
+            "ERROR"
+        );
+        
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }
