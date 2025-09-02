@@ -1,4 +1,7 @@
-package com.tmtjava.tmtjava.dto;
+package com.tmtjava.tmtjava.dto.response;
+
+
+import com.tmtjava.tmtjava.entity.User;
 
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -13,10 +16,10 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
-public class UserDTO {
+public class UserResponse {
+    Long id;
     String name;
     String email;
-    @Size(min = 8, max = 12, message = "Password must be between 8 and 12 characters")
     String password;
     
 }
