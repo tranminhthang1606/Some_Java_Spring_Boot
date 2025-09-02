@@ -23,7 +23,6 @@ public class GlobalException {
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<String>> handleValidationException(MethodArgumentNotValidException ex) {
-        // Lấy validation error đầu tiên
         String fieldError = ex.getBindingResult().getFieldErrors().get(0).getDefaultMessage();
         
         ApiResponse<String> response = new ApiResponse<>(
